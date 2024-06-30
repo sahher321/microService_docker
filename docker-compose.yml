@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  myserver:
+    build:
+      context: ./Server
+      dockerfile: dockerfile
+    container_name: my_container
+    restart: always
+    ports:
+      - "3000:3000"
+  myusers:
+    build:
+      context: ./Users
+      dockerfile: dockerfile
+    container_name: users_container
+    restart: always
+    ports:
+      - "3002:3002"
+  myproducts:
+    build:
+      context: ./Products
+      dockerfile: dockerfile
+    container_name: products_container
+    restart: always
+    ports:
+      - "3001:3001"
+  product-db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin123
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
+    driver: local
